@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Teorema de Bayes usando Python &#8212; Data Challenge</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Data Challenge: Teorema de Bayes" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo_un.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Challenge</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Data Challenge: Teorema de Bayes
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Teorema de Bayes usando Python
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/bayes_theorem.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lihkir/Uninorte"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lihkir/Uninorte/issues/new?title=Issue%20on%20page%20%2Fbayes_theorem.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/lihkir/Uninorte/master?urlpath=tree/docs/bayes_theorem.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problemas-de-aplicacion">
+   Problemas de Aplicación
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analisis-de-una-prueba-de-diagnostico-medico">
+     Análisis de una prueba de diagnóstico médico
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#calculo-manual">
+       Cálculo manual
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#calculo-usando-python">
+       Cálculo usando Python
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Teorema de Bayes usando Python</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problemas-de-aplicacion">
+   Problemas de Aplicación
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analisis-de-una-prueba-de-diagnostico-medico">
+     Análisis de una prueba de diagnóstico médico
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#calculo-manual">
+       Cálculo manual
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#calculo-usando-python">
+       Cálculo usando Python
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="teorema-de-bayes-usando-python">
+<h1>Teorema de Bayes usando Python<a class="headerlink" href="#teorema-de-bayes-usando-python" title="Permalink to this headline">¶</a></h1>
+<section id="problemas-de-aplicacion">
+<h2>Problemas de Aplicación<a class="headerlink" href="#problemas-de-aplicacion" title="Permalink to this headline">¶</a></h2>
+<section id="analisis-de-una-prueba-de-diagnostico-medico">
+<h3>Análisis de una prueba de diagnóstico médico<a class="headerlink" href="#analisis-de-una-prueba-de-diagnostico-medico" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Un ejemplo muy utilizado de las ventajas del <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> es el análisis de una prueba de diagnóstico médico.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Escenario</span></code>: Considere una población humana que puede o no tener cáncer (Cáncer es <code class="docutils literal notranslate"><span class="pre">True</span></code> o <code class="docutils literal notranslate"><span class="pre">False</span></code>) y una prueba médica que da un resultado positivo o negativo para detectar el cáncer (La prueba es <code class="docutils literal notranslate"><span class="pre">Positive</span></code> o <code class="docutils literal notranslate"><span class="pre">Negative</span></code>), por ejemplo, como una mamografía para detectar el cáncer de mama.</p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">Problema</span></code>: Si un paciente seleccionado al azar se somete a la prueba y ésta da un resultado <code class="docutils literal notranslate"><span class="pre">positivo</span></code>, ¿cuál es la probabilidad de que el paciente tenga cáncer?</p>
+</div></blockquote>
+<section id="calculo-manual">
+<h4>Cálculo manual<a class="headerlink" href="#calculo-manual" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Las pruebas de diagnóstico médico no son perfectas; tienen errores. A veces, un paciente tendrá cáncer, pero la prueba no lo detectará. Esta capacidad de la prueba para detectar el cáncer se denomina <code class="docutils literal notranslate"><span class="pre">sensibilidad</span></code> o <code class="docutils literal notranslate"><span class="pre">tasa</span> <span class="pre">de</span> <span class="pre">verdaderos</span> <span class="pre">positivos</span></code>.</p></li>
+<li><p>En este caso, se calcula un valor de sensibilidad para la prueba. La prueba es buena, pero no excelente, con una tasa de verdaderos positivos o <code class="docutils literal notranslate"><span class="pre">sensibilidad</span> <span class="pre">del</span> <span class="pre">85%</span></code>. Es decir, de todas las personas que tienen cáncer y se someten a la prueba, el <code class="docutils literal notranslate"><span class="pre">85%</span> <span class="pre">de</span> <span class="pre">ellas</span> <span class="pre">obtendrán</span> <span class="pre">un</span> <span class="pre">resultado</span> <span class="pre">positivo</span> <span class="pre">de</span> <span class="pre">la</span> <span class="pre">prueba</span></code>. Entonces</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[P(\textsf{Test=Positive} |  \textsf{Cancer=True}) = 0.85\]</div>
+<ul class="simple">
+<li><p>Dada esta información, nuestra intuición sugeriría que hay un 85% de probabilidad de que el paciente tenga cáncer. <code class="docutils literal notranslate"><span class="pre">Nuestras</span> <span class="pre">intuiciones</span> <span class="pre">sobre</span> <span class="pre">la</span> <span class="pre">probabilidad</span> <span class="pre">son</span> <span class="pre">erróneas.</span></code></p></li>
+<li><p>Este tipo de error en la interpretación de las probabilidades es tan común que tiene su propio nombre; se denomina <code class="docutils literal notranslate"><span class="pre">falacia</span> <span class="pre">de</span> <span class="pre">la</span> <span class="pre">tasa</span> <span class="pre">base</span></code> <a class="reference external" href="https://en.wikipedia.org/wiki/Base_rate_fallacy">base rate fallacy</a>.</p></li>
+<li><p>Tiene este nombre porque el error en la estimación de la probabilidad de un suceso se debe a que se ignora la tasa base. Es decir, ignora la probabilidad de que una persona seleccionada al azar tenga cáncer, independientemente de los resultados de una prueba diagnóstica.</p></li>
+</ul>
+<ul class="simple">
+<li><p>En este caso, podemos suponer que la probabilidad de cáncer de mama es baja, y utilizar un valor de tasa base artificial de una persona de cada <code class="docutils literal notranslate"><span class="pre">5000,</span> <span class="pre">o</span> <span class="pre">(0.0002)</span> <span class="pre">=</span> <span class="pre">0.02%</span></code>.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[P(\textsf{Cancer=True}) = 0.02%\]</div>
+<ul class="simple">
+<li><p>Podemos calcular correctamente la probabilidad de que un paciente tenga cáncer dado un resultado positivo de la prueba utilizando el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code>. Traslademos nuestro escenario al siguiente sistema de ecuaciones</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(A|B)&amp;=\frac{P(A)\cdot P(B|A)}{P(B)}\\
+P(\textsf{Cancer=True} | \textsf{Test=Positive}) &amp;= \frac{P(\textsf{Cancer=True})\cdot P(\textsf{Test=Positive} | \textsf{Cancer=True})}{P(\textsf{Test=Positive})} 
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Sabemos que la probabilidad de que la prueba sea positiva dado que el paciente tiene cáncer es del <code class="docutils literal notranslate"><span class="pre">85%</span></code>, y sabemos que la tasa base o la probabilidad previa de que un determinado paciente tenga cáncer es del <code class="docutils literal notranslate"><span class="pre">0.02%</span></code>; podemos introducir estos valores:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\textsf{Cancer=True} | \textsf{Test=Positive}) = \frac{0.85\cdot0.0002}{P(\textsf{Test=Positive})} 
+\]</div>
+<ul class="simple">
+<li><p>Nótese que no conocemos <span class="math notranslate nohighlight">\(P(\textsf{Test=Positivo})\)</span>, no se da directamente. En cambio, podemos estimarlo utilizando:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(B) &amp;= P(A)\cdot P(B|A) + P(A^{c})\cdot P(B|A^{c})\\
+P(\textsf{Test=Positive}) &amp;= P(\textsf{Cancer=True})\cdot P(\textsf{Test=Positive} | \textsf{Cancer=True})\\
+&amp;+ P(\textsf{Cancer=False})\cdot P(\textsf{Test=Positive} | \textsf{Cancer=False}) 
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>En primer lugar, podemos calcular <span class="math notranslate nohighlight">\(P(\textsf{Cáncer=Falso})\)</span> como el complemento de <span class="math notranslate nohighlight">\(P(\textsf{Cáncer=Verdadero})\)</span>, que ya conocemos</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\textsf{Cancer=False}) = 1 – P(\textsf{Cancer=True}) = 1 – 0.0002 = 0.9998
+\]</div>
+<ul class="simple">
+<li><p>Vamos a complementar lo que tenemos. Podemos introducir nuestros valores conocidos de la siguiente manera</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\textsf{Test=Positive}) = 0.85\cdot 0.0002 + P(\textsf{Test=Positive} | \textsf{Cancer=False})\cdot 0.9998
+\]</div>
+<ul class="simple">
+<li><p>Todavía no sabemos la probabilidad de un resultado positivo de la prueba si no hay cáncer. Esto requiere información adicional. En concreto, necesitamos saber que tan buena es la prueba para identificar correctamente a las personas que no tienen cáncer. Es decir, el resultado negativo de la prueba (<span class="math notranslate nohighlight">\(\textsf{Test=Negativo}\)</span>) cuando el paciente no tiene cáncer (<span class="math notranslate nohighlight">\(\textsf{Cáncer=Falso}\)</span>), lo que se llama la tasa de verdaderos negativos o la especificidad. Utilizaremos un valor de especificidad artificial del 95%.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\textsf{Test=Negative} | \textsf{Cancer=False}) = 0.95
+\]</div>
+<ul class="simple">
+<li><p>Con este último dato, podemos calcular la tasa de falsos positivos o de falsas alarmas como el complemento de la tasa de verdaderos negativos.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(\textsf{Test=Positive} | \textsf{Cancer=False}) = 1 – P(\textsf{Test=Negative} | \textsf{Cancer=False})= 1 – 0.95 = 0.05
+\]</div>
+<ul class="simple">
+<li><p>Podemos introducir esta tasa de falsas alarmas en nuestro cálculo de <span class="math notranslate nohighlight">\(P(\textsf{Prueba=Positiva})\)</span> de la siguiente manera</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(\textsf{Test=Positive}) &amp;= 0.85\cdot0.0002 + 0.05\cdot0.9998\\
+&amp;= 0.00017 + 0.04999\\
+&amp;= 0.05016\\
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Por lo que la probabilidad de que la prueba dé un resultado positivo, independientemente de si la persona tiene cáncer o no, es de aproximadamente el <code class="docutils literal notranslate"><span class="pre">5%</span></code>. Ahora tenemos suficiente información para aplicar el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> y estimar la probabilidad de que una persona seleccionada al azar tenga cáncer si obtiene un resultado positivo en la prueba</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(\textsf{Cancer=True} | \textsf{Test=Positive}) &amp;= \frac{P(\textsf{Cancer=True})\cdot P(\textsf{Test=Positive} | \textsf{Cancer=True})}{P(Test=Positive)}\\
+&amp;= \frac{(0.0002)\cdot(0.85)}{0.05016}\\
+&amp;= \frac{0.00017}{0.05016}\\[2mm] 
+&amp;= 0.003389154704944
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>El cálculo sugiere que si se informa al paciente de que tiene cáncer con esta prueba, sólo hay un <code class="docutils literal notranslate"><span class="pre">0.33%</span></code> de posibilidades de que lo tenga. Es una prueba de diagnóstico inadecuada.</p></li>
+<li><p>El ejemplo también muestra que el cálculo de la probabilidad condicional requiere bastante información. Por ejemplo, si ya tenemos los valores utilizados en el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code>, podemos utilizarlos directamente.</p></li>
+<li><p>Esto no suele ser así, y normalmente tenemos que calcular las partes que necesitamos y unirlos, como hicimos en este caso. En nuestro caso, se nos han dado tres datos: <code class="docutils literal notranslate"><span class="pre">la</span> <span class="pre">tasa</span> <span class="pre">base,</span> <span class="pre">la</span> <span class="pre">sensibilidad</span> <span class="pre">(o</span> <span class="pre">tasa</span> <span class="pre">de</span> <span class="pre">verdaderos</span> <span class="pre">positivos)</span> <span class="pre">y</span> <span class="pre">la</span> <span class="pre">especificidad</span> <span class="pre">(o</span> <span class="pre">tasa</span> <span class="pre">de</span> <span class="pre">verdaderos</span> <span class="pre">negativos).</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sensibilidad</span></code>: el 85% de las personas con cáncer obtendrán un resultado positivo en la prueba.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tasa</span> <span class="pre">base</span></code>: El 0.02% de las personas tienen cáncer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Especificidad</span></code>: el 95% de las personas sin cáncer obtendrán un resultado negativo en la prueba.</p></li>
+</ul>
+</li>
+<li><p>No disponíamos de la <span class="math notranslate nohighlight">\(P(\textsf{Prueba=Positiva})\)</span>, pero la calculamos teniendo en cuenta lo que ya teníamos disponible.</p></li>
+<li><p>El <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> nos permite ser aún más precisos sobre un escenario dado. Por ejemplo, si tuviéramos más información sobre el paciente (por ejemplo, su edad) y sobre el ámbito (por ejemplo, las tasas de cáncer para los rangos de edad), podríamos ofrecer una estimación de la probabilidad aún más precisa.</p></li>
+<li><p>Veamos cómo podemos calcular este escenario exacto utilizando unas pocas líneas de código <code class="docutils literal notranslate"><span class="pre">Python</span></code>.</p></li>
+</ul>
+</section>
+<section id="calculo-usando-python">
+<h4>Cálculo usando Python<a class="headerlink" href="#calculo-usando-python" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>El siguiente ejemplo realiza el mismo cálculo en <code class="docutils literal notranslate"><span class="pre">Python</span></code>, lo que le permite jugar con los parámetros y probar diferentes escenarios.</p></li>
+<li><p>Calculamos las probabilidades: <span class="math notranslate nohighlight">\(P(A|B)\)</span> given <span class="math notranslate nohighlight">\(P(A)\)</span>, <span class="math notranslate nohighlight">\(P(B|A)\)</span>, <span class="math notranslate nohighlight">\(P(B|A^{c})\)</span></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bayes_theorem</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b_given_a</span><span class="p">,</span> <span class="n">p_b_given_not_a</span><span class="p">):</span>
+    
+    <span class="n">not_a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p_a</span> <span class="c1"># P(not A)</span>
+    <span class="n">p_b</span> <span class="o">=</span> <span class="n">p_b_given_a</span> <span class="o">*</span> <span class="n">p_a</span> <span class="o">+</span> <span class="n">p_b_given_not_a</span> <span class="o">*</span> <span class="n">not_a</span> <span class="c1"># P(B)</span>
+    <span class="n">p_a_given_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_b_given_a</span> <span class="o">*</span> <span class="n">p_a</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_b</span> <span class="c1"># P(A|B)</span>
+    
+    <span class="k">return</span> <span class="n">p_a_given_b</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_a</span> <span class="o">=</span> <span class="mf">0.0002</span> <span class="c1"># P(A)</span>
+<span class="n">p_b_given_a</span> <span class="o">=</span> <span class="mf">0.85</span> <span class="c1"># P(B|A)</span>
+<span class="n">p_b_given_not_a</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="c1"># P(B|not A)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">bayes_theorem</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b_given_a</span><span class="p">,</span> <span class="n">p_b_given_not_a</span><span class="p">)</span> <span class="c1"># P(A|B)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;P(A|B) = </span><span class="si">%.3f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P(A|B) = 0.339%
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Al ejecutar el ejemplo se calcula la probabilidad de que un paciente tenga cáncer si la prueba arroja un resultado positivo, lo que coincide con nuestro cálculo manual.</p></li>
+</ul>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(P(A|B)\)</span> = 0.339%</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Este es un pequeño script útil que se puede adaptar a nuevos escenarios</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Data Challenge: Teorema de Bayes</p>
+        </div>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Departamento de Matemáticas y Estadística<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
