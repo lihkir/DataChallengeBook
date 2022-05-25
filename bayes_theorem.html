@@ -232,6 +232,11 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
     </ul>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#clasificador-binario-terminologia">
+     Clasificador binario: Terminología
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -275,6 +280,11 @@ const thebe_selector_output = ".output, .cell_output"
       </a>
      </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#clasificador-binario-terminologia">
+     Clasificador binario: Terminología
+    </a>
    </li>
   </ul>
  </li>
@@ -458,6 +468,155 @@ P(\textsf{Cancer=True} | \textsf{Test=Positive}) &amp;= \frac{P(\textsf{Cancer=T
 <li><p>Este es un pequeño script útil que se puede adaptar a nuevos escenarios</p></li>
 </ul>
 </section>
+</section>
+<section id="clasificador-binario-terminologia">
+<h3>Clasificador binario: Terminología<a class="headerlink" href="#clasificador-binario-terminologia" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Puede ser útil pensar en el ejemplo de la prueba del cáncer en términos de la <code class="docutils literal notranslate"><span class="pre">clasificación</span> <span class="pre">binaria</span></code> (de dos clases), es decir, de donde provienen las nociones de <a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity"><code class="docutils literal notranslate"><span class="pre">especificidad</span> <span class="pre">y</span> <span class="pre">sensibilidad</span></code></a>. Estos términos ayudan a que todo tenga más sentido.</p></li>
+<li><p>En primer lugar, definamos una <code class="docutils literal notranslate"><span class="pre">matriz</span> <span class="pre">de</span> <span class="pre">confusión</span></code></p></li>
+<li><p>Una <code class="docutils literal notranslate"><span class="pre">matriz</span> <span class="pre">de</span> <span class="pre">confusión</span></code> es un resumen de los resultados de las predicciones en un problema de clasificación. El número de predicciones correctas e incorrectas se resume con valores de recuento y se desglosa por cada clase. Esta es la clave de la matriz de confusión.</p></li>
+<li><p>La matriz de confusión muestra las formas en que su modelo de clasificación se confunde cuando hace predicciones. Le da una idea no solo de los errores que comete su clasificador, sino, lo que es más importante, de los tipos de errores que se cometen</p></li>
+</ul>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Clase positiva</p></th>
+<th class="head"><p>Clase negativa</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Predicción positiva</strong></p></td>
+<td><p>Verdaderos Positivos (VP)</p></td>
+<td><p>Falsos Positivos (FP)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Predicción negativa</strong></p></td>
+<td><p>Falsos Negativos (FN)</p></td>
+<td><p>Verdaderos Negativos (VN)</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>A continuación, podemos definir algunos índices a partir de la matriz de confusión</p>
+<ul>
+<li><p>Tasa de verdaderos positivos: <span class="math notranslate nohighlight">\(TVP = \displaystyle{\frac{VP}{VP + FN}}\)</span></p></li>
+<li><p>Tasa de falsos positivos:     <span class="math notranslate nohighlight">\(TFP = \displaystyle{\frac{FP}{FP + VN}}\)</span></p></li>
+<li><p>Tasa de verdaderos negativos: <span class="math notranslate nohighlight">\(TVN = \displaystyle{\frac{VN}{VN + FP}}\)</span></p></li>
+<li><p>Tasa de falsos negativos:     <span class="math notranslate nohighlight">\(TFN = \displaystyle{\frac{FN}{FN + VP}}\)</span></p></li>
+</ul>
+</li>
+<li><p>Estos términos se denominan tasas, pero también pueden interpretarse como probabilidades. Nótese lo siguiente:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+TVP + TFN &amp;= 1.0\Rightarrow TFN = 1.0-TVP\quad\text{o}\quad TVP = 1.0-TFN\\
+TVN + TFP &amp;= 1.0\Rightarrow TVN = 1.0-TFP\quad\text{o}\quad TFP = 1.0-TVN
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Recordemos que en una sección anterior calculamos la tasa de falsos positivos dado el complemento de la tasa de verdaderos negativos, o <span class="math notranslate nohighlight">\(TFP = 1.0 - TVN\)</span>. Algunas de estas tasas tienen nombres especiales, por ejemplo:</p>
+<ul>
+<li><p>Sensibilidad  = <span class="math notranslate nohighlight">\(TVP\)</span></p></li>
+<li><p>Especificidad = <span class="math notranslate nohighlight">\(TVN\)</span></p></li>
+</ul>
+</li>
+<li><p>Podemos asignar estos índices a términos conocidos del <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(P(B|A)\)</span>: Tasa de verdaderos positivos: <span class="math notranslate nohighlight">\(TVP\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B^{c}|A^{c})\)</span>: Tasa de verdaderos negativos <span class="math notranslate nohighlight">\(TVN\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B|A^{c})\)</span>: Tasa de falsos positivos <span class="math notranslate nohighlight">\(TFP\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B^{c}|A)\)</span>: Tasa de falsos negativos <span class="math notranslate nohighlight">\(TFN\)</span></p></li>
+</ul>
+</li>
+<li><p>También podemos mapear las tasas base para la condición (<code class="docutils literal notranslate"><span class="pre">clase</span></code>) y el tratamiento (<code class="docutils literal notranslate"><span class="pre">predicción</span></code>) en términos familiares del <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(P(A)\)</span>: Probabilidad de un Clase Positiva (CP)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A^{c})\)</span>: Probabilidad de una Clase Negativa (CN)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B)\)</span>: Probabilidad de una Predicción Positiva (PP)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B^{c})\)</span>: Probabilidad de una Predicción Negativa (PN)</p></li>
+</ul>
+</li>
+<li><p>Ahora, consideremos el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> utilizando estos términos</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(A|B) &amp;= \frac{P(A)\cdot P(B|A)}{P(B)}\\ 
+P(A|B) &amp;= \frac{TVP\cdot CP}{PP}
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Cuando a menudo no podemos calcular <span class="math notranslate nohighlight">\(P(B)\)</span>, utilizamos una alternativa</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(B) &amp;= P(A)\cdot P(B|A)+P(A^{c})\cdot P(B|A^{c})\\
+&amp;= TVP\cdot CP + TFP\cdot CN
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Ahora, veamos nuestro escenario de cáncer y una prueba de detección de cáncer. La clase o condición sería <code class="docutils literal notranslate"><span class="pre">&quot;Cáncer&quot;</span></code> y el tratamiento o predicción sería la <code class="docutils literal notranslate"><span class="pre">&quot;Prueba&quot;</span></code>. En primer lugar, revisemos todos los índices:</p>
+<ul>
+<li><p>Tasa de verdaderos positivos (TVP): 85%</p></li>
+<li><p>Tasa de falsos positivos (TFP): 5%</p></li>
+<li><p>Tasa de verdaderos negativos (TVN): 95%.</p></li>
+<li><p>Tasa de falsos negativos (TFN): 15%.</p></li>
+</ul>
+</li>
+<li><p>Repasemos también lo que sabemos sobre las tasas básicas</p>
+<ul>
+<li><p>Clase positiva (CP): 0.02%</p></li>
+<li><p>Clase negativa (CN): 99,98%</p></li>
+<li><p>Predicción positiva (PP): 5,016%.</p></li>
+<li><p>Predicción negativa (PN): 94,984%.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Uniendo las cosas, podemos calcular la probabilidad de un resultado positivo de la prueba (una <code class="docutils literal notranslate"><span class="pre">predicción</span> <span class="pre">positiva</span></code>) como la probabilidad de un resultado positivo de la prueba dado que tiene cáncer (la <code class="docutils literal notranslate"><span class="pre">tasa</span> <span class="pre">positiva</span> <span class="pre">verdadera</span></code>) multiplicada por la tasa base de tener cáncer (la <code class="docutils literal notranslate"><span class="pre">clase</span> <span class="pre">positiva</span></code>), más la probabilidad de obtener un resultado positivo de la prueba dado que no tiene cáncer (la <code class="docutils literal notranslate"><span class="pre">tasa</span> <span class="pre">positiva</span> <span class="pre">falsa</span></code>) más la probabilidad de no tener cáncer (la <code class="docutils literal notranslate"><span class="pre">clase</span> <span class="pre">negativa</span></code>)</p></li>
+<li><p>El cálculo con estos términos es el siguiente</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(B) &amp;= P(A)\cdot P(B|A) + P(A^{c})\cdot P(B|A^{c})\\
+&amp;= TVP * CP + TFP * CN\\
+&amp;= 85\%\cdot0.02\% + 5\%\cdot99.98\%\\
+&amp;= 5.016\%
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>A continuación, podemos calcular el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> para el escenario, es decir, la probabilidad de tener cáncer dado un resultado positivo de la prueba (la <code class="docutils literal notranslate"><span class="pre">posterior</span></code>) es la probabilidad de un resultado positivo de la prueba dado que tiene cáncer (la <code class="docutils literal notranslate"><span class="pre">tasa</span> <span class="pre">positiva</span> <span class="pre">verdadera</span></code>) multiplicada por la probabilidad de tener cáncer (la <code class="docutils literal notranslate"><span class="pre">tasa</span> <span class="pre">de</span> <span class="pre">clase</span> <span class="pre">positiva</span></code>), dividida por la probabilidad de un resultado positivo de la prueba (una <code class="docutils literal notranslate"><span class="pre">predicción</span> <span class="pre">positiva</span></code>). El cálculo con estos términos es el siguiente:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(A|B) &amp;= \frac{P(A)\cdot P(B|A)}{P(B)}\\
+&amp;= \frac{TVP\cdot PC}{PP}\\
+&amp;= \frac{85\%\cdot0.02\%}{5.016\%}\\ 
+&amp;= 0.339%
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Resulta que en este caso, la probabilidad posterior que estamos calculando con el <code class="docutils literal notranslate"><span class="pre">Teorema</span> <span class="pre">de</span> <span class="pre">Bayes</span></code> es equivalente a la precisión, también llamada <code class="docutils literal notranslate"><span class="pre">Valor</span> <span class="pre">Predictivo</span> <span class="pre">Positivo</span> <span class="pre">(VPP)</span></code> de la matriz de confusión</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[VPP = \frac{VP}{VP + FP}\]</div>
+<ul class="simple">
+<li><p>O, dicho en términos de nuestro clasificador:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+P(A|B) &amp;= VPP\\
+VPP &amp;= \frac{TVP\cdot CP}{PP} 
+\end{align*}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Entonces, <code class="docutils literal notranslate"><span class="pre">¿por</span> <span class="pre">qué</span> <span class="pre">nos</span> <span class="pre">tomamos</span> <span class="pre">la</span> <span class="pre">molestia</span> <span class="pre">de</span> <span class="pre">calcular</span> <span class="pre">la</span> <span class="pre">probabilidad</span> <span class="pre">posterior?</span></code>. Porque no tenemos la matriz de confusión para una población de personas con y sin cáncer que se han sometido a la prueba y que no se han sometido a ella. En lugar de ello, todo lo que tenemos son algunas probabilidades a priori sobre nuestra población y nuestra prueba.</p></li>
+<li><p>Esto pone de manifiesto cuándo podríamos optar por utilizar el cálculo en la práctica. En concreto, cuando tenemos creencias sobre los eventos implicados, pero no podemos realizar el cálculo contando ejemplos en el mundo real.</p></li>
+</ul>
 </section>
 </section>
 </section>
